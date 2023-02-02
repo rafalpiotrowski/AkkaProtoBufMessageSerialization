@@ -8,7 +8,6 @@ using Akka.Remote.Hosting;
 using Library;
 using Service1;
 using System.Collections.Immutable;
-using System.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,6 +31,7 @@ builder.Services.AddAkka(SystemName, builder =>
                 system.Log.Info($"RegisterOnMemberUp");
 
                 var accountVerification = system.ActorOf(Props.Create<AccountVerificationActor>(), "account-verification-system");
+                registry.Register<AccountVerificationActor>(accountVerification);
                 accountVerification.Tell(new CreateAccount() { AccountId = "account1", Name = "Test account1" });
                 accountVerification.Tell(new CreateAccount() { AccountId = "account2", Name = "Test account2" });
             });
@@ -46,5 +46,12 @@ builder.Services.AddAkka(SystemName, builder =>
 var app = builder.Build();
 
 app.MapGet("/", () => "Service2!");
+app.MapGet("/create", () =>
+{
+    var system = app.Services.GetService<ActorSystem>();
+    var registry = ActorRegistry.For(system!);
+    var actor = registry.Get<AccountVerificationActor>();
+    actor.Tell(new CreateAccount() { AccountId = "account", Name = "Test account" });
+});
 
 app.Run();

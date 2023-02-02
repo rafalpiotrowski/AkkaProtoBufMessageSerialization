@@ -8,7 +8,6 @@ using Akka.Remote.Hosting;
 using Library;
 using Service1;
 using System.Collections.Immutable;
-using System.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 

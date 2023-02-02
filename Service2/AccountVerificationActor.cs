@@ -9,6 +9,8 @@ public sealed class AccountVerificationActor : ReceiveActor
     {
         Receive<CreateAccount>(msg =>
         {
+            Context.System.Log.Info($"Request to create account: {msg}");
+
             var manager = Context.System.ActorSelection("akka.tcp://smaple-app@localhost:9001/user/account-manager");
             manager.Tell(msg);
         });

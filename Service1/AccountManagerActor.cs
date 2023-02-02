@@ -9,6 +9,7 @@ public sealed class AccountManagerActor : ReceiveActor
     {
         Receive<CreateAccount>(msg =>
         {
+            Context.System.Log.Info($"Creating account: {msg}");
             Sender.Tell(new AccountCreated() { AccountId = msg.AccountId });
         });
     }
