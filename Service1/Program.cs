@@ -16,7 +16,10 @@ const string SystemName = "smaple-app";
 builder.Services.AddAkka(SystemName, builder =>
 {
     builder
-        .AddSerialization()
+        .WithCustomSerializer(
+            "account-messages", 
+            new[] { typeof(IProtocolMember) },
+            system => new MessageSerializer(system))
         .WithRemoting("localhost", 9001)
         .WithClustering(
             new ClusterOptions()
