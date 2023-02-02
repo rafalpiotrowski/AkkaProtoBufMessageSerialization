@@ -5,19 +5,14 @@ public interface IProtocolMember
 {
 }
 
-public interface IWithAccountId 
-{
-    string AccountId { get; }
-}
-
 [ProtoContract]
-public sealed record AccountCreated : IProtocolMember, IWithAccountId
+public sealed record AccountCreated : IProtocolMember
 {
     [ProtoMember(1)] public required string AccountId { get; init; }
 }
 
 [ProtoContract]
-public sealed record CreateAccount : IProtocolMember, IWithAccountId
+public sealed record CreateAccount : IProtocolMember
 {
     [ProtoMember(1)] public required string AccountId { get; init; }
     [ProtoMember(2)] public required string Name { get; init; }
